@@ -19,4 +19,5 @@ COPY . .
 RUN ./mvnw clean package -DskipTests
 
 # Run the app
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/fintrack-0.0.1-SNAPSHOT.jar"]
+
