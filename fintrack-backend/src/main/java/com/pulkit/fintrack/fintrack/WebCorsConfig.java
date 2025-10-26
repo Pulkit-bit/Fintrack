@@ -11,9 +11,8 @@ import java.util.Arrays;
 @Configuration
 public class WebCorsConfig {
 
-    
-// Comma-separated list, e.g. http://localhost:5173,https://fintrack.onrender.com
-    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+
+@Value("${frontend.url:http://localhost:5173,https://fintrack-frontend-e5b6.onrender.com}")
     private String allowedOriginsProp;
 
     @Bean
