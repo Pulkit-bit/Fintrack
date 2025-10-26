@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { authErrorMessage } from './authErrors';
+import { authErrorMessage } from './authERRORS';
 
 export default function Login() {
   const { loginWithGoogle, loginWithEmail, registerWithEmail, loading } = useAuth();
