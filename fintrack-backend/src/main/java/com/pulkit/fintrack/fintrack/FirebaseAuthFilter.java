@@ -21,6 +21,22 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String origin = request.getHeader("Origin");
+        if (origin != null) {
+            // Always add CORS headers early
+            response.setHeader("Access-Control-Allow-Origin", origin);
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, Origin");
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.setHeader("Vary", "Origin");
+        }
+
+        // ✅ Let preflight OPTIONS requests pass without auth
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -52,7 +68,8 @@ public class FirebaseAuthFilter extends OncePerRequestFilter {
 
     private void sendUnauthorized(HttpServletResponse res, String code, String message) throws IOException {
         res.setStatus(HttpStatus.UNAUTHORIZED.value());
-        res.setHeader("WWW-Authenticate", "Bearer realm=\"fintrack\", error=\"" + code + "\"");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setContentType("application/json");
         res.getWriter().write(String.format("{\"error\":\"%s\",\"message\":\"%s\"}", code, message));
     }
