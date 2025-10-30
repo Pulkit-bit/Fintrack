@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import http from '../api/http';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const INITIAL_FORM = {
   amount: '',
@@ -104,17 +107,35 @@ export default function TransactionForm({ editing, onSaved, onCancel }) {
         />
       </div>
 
-      <div className="span-4 span-md-12">
-        <label className="form-label">Date</label>
-        <input
-          type="date"
-          className="form-control"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          required
-        />
-      </div>
+     <div className="span-4 span-md-12" style={{ width: '100%' }}>
+       <label className="form-label" htmlFor="date-input">Date</label>
+       <DatePicker
+         id="date-input"
+         selected={form.date ? new Date(form.date) : null}
+         onChange={(date) =>
+           setForm(f => ({
+             ...f,
+             date: date ? date.toISOString().slice(0, 10) : ''
+           }))
+         }
+         dateFormat="dd-MM-yyyy"
+         name="date"
+         required
+         data-testid="transaction-date"
+         placeholderText="Select date"
+         customInput={
+           <input
+             type="text"
+             className="form-control"
+             style={{ width: '100%' }}
+             required
+           />
+         }
+         // This style forces the DatePicker's container to full width too
+         wrapperClassName="full-width-datepicker"
+       />
+     </div>
+
 
       <div className="span-4 span-md-12">
         <label className="form-label">Description</label>
