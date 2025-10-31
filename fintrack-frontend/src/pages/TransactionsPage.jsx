@@ -3,7 +3,6 @@ import TransactionForm from '../components/TransactionForm';
 import TransactionTable from '../components/TransactionTable';
 
 export default function TransactionsPage() {
-const tableRef = useRef(null);
 const [editing, setEditing] = useState(null);
 const [reloadFlag, setReloadFlag] = useState(0);
 
@@ -31,7 +30,6 @@ return (
       <TransactionTable
         key={reloadFlag}
         onEditRequested={setEditing}
-        ref={tableRef}
       />
     </div>
   </div>

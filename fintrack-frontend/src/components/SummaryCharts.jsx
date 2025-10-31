@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { motion, animate } from 'framer-motion';
+import { useTheme } from '../contexts/ThemeContext';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -14,6 +15,7 @@ function currency(n) {
 }
 
 export default function SummaryCharts({ byType, byCategory }) {
+  const { isDark } = useTheme();
   const income = Number(byType?.INCOME || 0);
   const expense = Number(byType?.EXPENSE || 0);
   const net = income - expense;
@@ -68,7 +70,7 @@ export default function SummaryCharts({ byType, byCategory }) {
           usePointStyle: true,
           boxWidth: 8,
           padding: 8,
-          color: '#e9ecef',
+          color: isDark ? '#e9ecef' : '#2d3748', // Theme-aware legend color
           font: {
             family: 'system-ui, Avenir, Helvetica, Arial, sans-serif',
             size: 12,

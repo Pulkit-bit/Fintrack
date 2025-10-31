@@ -1,9 +1,11 @@
 // src/components/NavShell.jsx
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function NavShell() {
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <nav className="navbar bg-dark">
@@ -21,8 +23,16 @@ export default function NavShell() {
           </NavLink>
         </div>
 
-        {/* Right actions (username + Logout) */}
+        {/* Right actions (theme toggle + username + Logout) */}
         <div className="navbar-actions">
+          <button 
+            className="btn btn-sm btn-outline-light theme-toggle" 
+            onClick={toggleTheme}
+            type="button"
+            title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
           {user ? (
             <>
               <span className="user-name">{user.displayName || user.email}</span>

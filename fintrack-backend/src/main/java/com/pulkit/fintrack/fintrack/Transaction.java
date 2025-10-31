@@ -22,22 +22,22 @@ public class Transaction {
     private String description;
 
     @Column(nullable = false)
-    private String userId;     // Firebase uid owner[1]
+    private String userId;     // Firebase uid owner
 
     // Getters and Setters
-    public Long getId() { return id; }                                 //[1]
-    public void setId(Long id) { this.id = id; }                       //[1]
-    public double getAmount() { return amount; }                       //[1]
-    public void setAmount(double amount) { this.amount = amount; }     //[1]
-    public String getType() { return type; }                           //[1]
-    public void setType(String type) { this.type = type; }             //[1]
-    public String getCategory() { return category; }                   //[1]
-    public void setCategory(String category) { this.category = category; } //[1]
-    public LocalDate getDate() { return date; }                        //[1]
-    public void setDate(LocalDate date) { this.date = date; }          //[1]
-    public String getDescription() { return description; }             //[1]
-    public void setDescription(String description) { this.description = description; } //[1]
+    public Long getId() { return id; }                                 
+    public void setId(Long id) { this.id = id; }                       
+    public double getAmount() { return amount; }                       
+    public void setAmount(double amount) { this.amount = amount; }     
+    public String getType() { return type; }                           
+    public void setType(String type) { this.type = type; }            
+    public String getCategory() { return category; }                  
+    public void setCategory(String category) { this.category = category; } 
+    public LocalDate getDate() { return date; }                       
+    public void setDate(LocalDate date) { this.date = date; }          
+    public String getDescription() { return description; }             
+    public void setDescription(String description) { this.description = description; } 
 
-    public String getUserId() { return userId; }                       //[1]
-    public void setUserId(String userId) { this.userId = userId; }     //[1]
+    public String getUserId() { return userId; }                       
+    public void setUserId(String userId) { this.userId = userId; }     
 }
