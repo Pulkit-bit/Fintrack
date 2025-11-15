@@ -25,8 +25,8 @@ export default function NavShell() {
 
         {/* Right actions (theme toggle + username + Logout) */}
         <div className="navbar-actions">
-          <button 
-            className="btn btn-sm btn-outline-light theme-toggle" 
+          <button
+            className="btn btn-sm btn-outline-light theme-toggle"
             onClick={toggleTheme}
             type="button"
             title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
