@@ -3,6 +3,8 @@ package com.pulkit.fintrack.fintrack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -19,10 +21,35 @@ public class TransactionController {
     }
 
     // List all transactions for the signed-in user, newest first
+    // Optional filters: year, month
     @GetMapping
-    public List<Transaction> getAll(HttpServletRequest request) {
+    public List<Transaction> getAll(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month) {
         String userId = uid(request);
-        return repo.findByUserIdOrderByDateDesc(userId); // user-scoped read
+        
+        // If no filters, return all
+        if (year == null) {
+            return repo.findByUserIdOrderByDateDesc(userId);
+        }
+        
+        // Calculate date range
+        LocalDate startDate;
+        LocalDate endDate;
+        
+        if (month != null) {
+            // Monthly filter
+            YearMonth yearMonth = YearMonth.of(year, month);
+            startDate = yearMonth.atDay(1);
+            endDate = yearMonth.atEndOfMonth();
+        } else {
+            // Yearly filter
+            startDate = LocalDate.of(year, 1, 1);
+            endDate = LocalDate.of(year, 12, 31);
+        }
+        
+        return repo.findByUserIdAndDateBetween(userId, startDate, endDate);
     }
 
     // Create a transaction for the signed-in user

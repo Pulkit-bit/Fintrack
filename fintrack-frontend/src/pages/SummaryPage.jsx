@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react';
 import http from '../api/http';
 import SummaryCharts from '../components/SummaryCharts';
+import { useFilter } from '../contexts/FilterContext';
 
 export default function SummaryPage() {
   const [loading, setLoading] = useState(true);
   const [byType, setByType] = useState({});
   const [byCategory, setByCategory] = useState({});
+  const { filterParams } = useFilter();
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
+        // Build query params
+        const params = {};
+        if (filterParams?.year) params.year = filterParams.year;
+        if (filterParams?.month) params.month = filterParams.month;
+        
         const [typeRes, catRes] = await Promise.all([
-          http.get('/api/transactions/summary/type'),
-          http.get('/api/transactions/summary/category'),
+          http.get('/api/transactions/summary/type', { params }),
+          http.get('/api/transactions/summary/category', { params }),
         ]);
         setByType(typeRes.data || {});
         setByCategory(catRes.data || {});
@@ -25,7 +32,8 @@ export default function SummaryPage() {
       }
     };
     load();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterParams?.year, filterParams?.month]);
 
   return (
     <div className="page-wrap summary-wrap">

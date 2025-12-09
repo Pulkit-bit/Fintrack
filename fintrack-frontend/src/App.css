@@ -216,52 +216,19 @@ body {
   font-weight: 600;
 }
 
+.btn:hover {
+  color: white;
+  background-color: #f56565;
+}
+
 .btn-rainbow {
-  color: #fff;
+  color: #0d9ffd;
   border: none;
-  animation: rainbowGlow 3s linear infinite;
   background-size: 200% 200%;
-  transition: transform 150ms ease;
-}
-
-.btn-rainbow:hover {
-  transform: translateY(-1px);
-}
-
-.btn-rainbow:disabled {
-  animation: none;
-  opacity: 0.7;
-}
-
-@keyframes rainbowGlow {
-  0% {
-    box-shadow: 0 0 10px 2px #ff3b3b;
-    background: linear-gradient(45deg, #ff3b3b, #ff8c00);
-  }
-
-  25% {
-    box-shadow: 0 0 12px 3px #ff8c00;
-    background: linear-gradient(45deg, #ff8c00, #ffd400);
-  }
-
-  50% {
-    box-shadow: 0 0 14px 4px #23d5ab;
-    background: linear-gradient(45deg, #ffd400, #23d5ab);
-  }
-
-  75% {
-    box-shadow: 0 0 16px 5px #3b83f6;
-    background: linear-gradient(45deg, #23d5ab, #3b83f6);
-  }
-
-  100% {
-    box-shadow: 0 0 10px 2px #ff3b3b;
-    background: linear-gradient(45deg, #3b83f6, #ff3b3b);
-  }
+  
 }
 
 .btn-secondary {
-  color: #fff;
   background: #2f5779;
 }
 
@@ -569,4 +536,145 @@ body {
 
 .full-width-datepicker {
   width: 100%;
+}
+
+/* --- Date Filter Component --- */
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.light-theme .filter-label {
+  color: #374151;
+}
+
+.dark-theme .filter-label {
+  color: #e2e8f0;
+}
+
+.filter-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 120px;
+  /* Remove dropdown arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  padding-right: 12px;
+}
+
+.light-theme .filter-select {
+  background-color: #ffffff;
+  border-color: #d1d5db;
+  color: #1a202c;
+}
+
+.light-theme .filter-select:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 0.2rem rgba(49, 130, 206, 0.25);
+  outline: none;
+}
+
+.dark-theme .filter-select {
+  background-color: #1a202c;
+  border-color: #4a5568;
+  color: #e2e8f0;
+}
+
+.dark-theme .filter-select:focus {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 0.2rem rgba(49, 130, 206, 0.25);
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+  
+  .filter-group {
+    gap: 3px;
+  }
+  
+  .filter-label {
+    font-size: 0.8rem;
+  }
+  
+  .filter-select {
+    min-width: unset;
+    width: auto;
+    font-size: 0.75rem;
+    padding: 5px 4px;
+    padding-right: 6px;
+  }
+  
+  /* Stack heading and filter on mobile */
+  .transactions-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+  
+  .transactions-header h4 {
+    width: 100%;
+  }
+  
+  .date-filter {
+    width: 100%;
+  }
+}
+
+/* Flexbox utilities for filter placement */
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
 }

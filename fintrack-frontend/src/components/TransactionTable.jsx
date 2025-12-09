@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import http from '../api/http';
 
-export default function TransactionTable({ onEditRequested }) {
+export default function TransactionTable({ onEditRequested, filterParams }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
     try {
       setLoading(true);
-      const res = await http.get('/api/transactions');
+      // Build query params
+      const params = {};
+      if (filterParams?.year) params.year = filterParams.year;
+      if (filterParams?.month) params.month = filterParams.month;
+      
+      const res = await http.get('/api/transactions', { params });
       let data = res.data || [];
 
      /*
@@ -54,7 +59,8 @@ export default function TransactionTable({ onEditRequested }) {
 
   useEffect(() => {
     load();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterParams?.year, filterParams?.month]);
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this transaction?')) return;

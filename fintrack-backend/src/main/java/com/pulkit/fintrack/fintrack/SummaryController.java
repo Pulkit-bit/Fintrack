@@ -2,9 +2,12 @@ package com.pulkit.fintrack.fintrack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
 @RestController
@@ -14,10 +17,37 @@ public class SummaryController {
     private TransactionRepository repo;
 
     // Total by type (income vs expense) — per user
+    // Optional filters: year, month
     @GetMapping("/api/transactions/summary/type")
-    public Map<String, Double> getTotalByType(HttpServletRequest request) {
+    public Map<String, Double> getTotalByType(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month) {
         String uid = (String) request.getAttribute("uid"); // set by auth filter
-        List<Object[]> results = repo.getTotalAmountByType(uid); // returns [type, sum]
+        
+        List<Object[]> results;
+        if (year == null) {
+            // No filter - all time
+            results = repo.getTotalAmountByType(uid);
+        } else {
+            // Calculate date range
+            LocalDate startDate;
+            LocalDate endDate;
+            
+            if (month != null) {
+                // Monthly filter
+                YearMonth yearMonth = YearMonth.of(year, month);
+                startDate = yearMonth.atDay(1);
+                endDate = yearMonth.atEndOfMonth();
+            } else {
+                // Yearly filter
+                startDate = LocalDate.of(year, 1, 1);
+                endDate = LocalDate.of(year, 12, 31);
+            }
+            
+            results = repo.getTotalAmountByTypeAndDateRange(uid, startDate, endDate);
+        }
+        
         Map<String, Double> map = new HashMap<>();
         for (Object[] row : results) {
             String type = (String) row[0];             // column 0: type
@@ -28,10 +58,37 @@ public class SummaryController {
     }
 
     // Expense by category — per user
+    // Optional filters: year, month
     @GetMapping("/api/transactions/summary/category")
-    public Map<String, Double> getExpenseByCategory(HttpServletRequest request) {
+    public Map<String, Double> getExpenseByCategory(
+            HttpServletRequest request,
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month) {
         String uid = (String) request.getAttribute("uid"); // set by auth filter
-        List<Object[]> results = repo.getTotalExpenseByCategory(uid); // returns [category, sum]
+        
+        List<Object[]> results;
+        if (year == null) {
+            // No filter - all time
+            results = repo.getTotalExpenseByCategory(uid);
+        } else {
+            // Calculate date range
+            LocalDate startDate;
+            LocalDate endDate;
+            
+            if (month != null) {
+                // Monthly filter
+                YearMonth yearMonth = YearMonth.of(year, month);
+                startDate = yearMonth.atDay(1);
+                endDate = yearMonth.atEndOfMonth();
+            } else {
+                // Yearly filter
+                startDate = LocalDate.of(year, 1, 1);
+                endDate = LocalDate.of(year, 12, 31);
+            }
+            
+            results = repo.getTotalExpenseByCategoryAndDateRange(uid, startDate, endDate);
+        }
+        
         Map<String, Double> map = new HashMap<>();
         for (Object[] row : results) {
             String category = (String) row[0];             // column 0: category
